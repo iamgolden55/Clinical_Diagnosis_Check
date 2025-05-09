@@ -149,4 +149,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📬 Contact
 
-For questions and feedback, please open an issue on GitHub or contact the repository owner. 
+For questions and feedback, please open an issue on GitHub or contact the repository owner.
