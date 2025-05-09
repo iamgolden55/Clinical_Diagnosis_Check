@@ -25,6 +25,13 @@ import logging
 # Set up logging
 logger = logging.getLogger(__name__)
 
+def is_pure_pidgin(text):
+    pidgin_keywords = [
+        "bele", "wahala", "dey", "go", "no worry", "abeg", "small-small",
+        "pain me", "comot", "gist", "how far", "na", "wetin", "palava", "waka"
+    ]
+    return any(word in text.lower() for word in pidgin_keywords)
+
 # Create your views here.
 
 # Load environment variables from .env
@@ -52,6 +59,14 @@ class ChatAPIView(APIView):
             session = get_object_or_404(ConversationSession, id=session_id)
         else:
             session = ConversationSession.objects.create()
+            welcome_message = "Hello! I'm Elara, your virtual healthcare assistant. How are you feeling today, and what would you like to discuss regarding your health?"
+            Message.objects.create(session=session, role='assistant', content=welcome_message)
+            return Response({
+                'reply': welcome_message,
+                'session_id': session.id,
+                'entities': {},
+                'emotion': {}
+            })
 
         # Extract medical entities from user message
         detected_entities = extract_medical_entities(user_message)
@@ -65,17 +80,47 @@ class ChatAPIView(APIView):
         Message.objects.create(session=session, role='user', content=user_message)
 
         # Create LangChain's ChatOpenAI instance
+        # Dynamically adjust LLM temperature based on patient emotion
+        emotion = emotion_result.get("emotion", "unknown")
+        if emotion in ["joy", "neutral"]:
+            temp_setting = 1.3  # More expressive, human
+        elif emotion in ["sadness", "fear"]:
+            temp_setting = 0.8  # Gentle and supportive
+        else:
+            temp_setting = 1.0  # Balanced
+
+        # Initialize conversational LLM with creative but controlled settings
         llm = ChatOpenAI(
-            temperature=0.7,
+            temperature=temp_setting,
             openai_api_key=os.getenv('OPENAI_API_KEY'),
-            model="gpt-3.5-turbo"
+            model="gpt-4o",
+            model_kwargs={
+                "top_p": 0.95  # Wide but not too chaotic   # Still grounded in quality
+            }
         )
         
         # Load previous messages from database for this session
         history = session.messages.order_by('timestamp')
         
-        # Create system message for healthcare assistant context
-        system_message = "You are a caring healthcare assistant. Ask follow-up questions to understand the patient's health and feelings."
+        # Pidgin vs Standard tone switch
+        if is_pure_pidgin(user_message):
+            system_message = (
+                "You be Elara, na smart and kind healthcare assistant wey sabi speak Nigerian Pidgin well. "
+                "Talk like say you dey gist with person, but still give solid medical help. "
+                "Greet the person well, ask wetin dey do dem, find out how long the thing don dey, "
+                "and if dem don try anything. If e no serious, give small advice. If e serious, summarize the problem. "
+                "No form, no English overload — just make dem feel say you dey for their side."
+            )
+        else:
+            system_message = (
+                "You are Elara, a warm and compassionate AI assistant designed to help patients with their inquiries. "
+                "Begin by greeting the patient warmly to create a comfortable atmosphere. Then, ask them about their "
+                "symptoms in detail. Follow up with further questions related to their lifestyle and any other relevant "
+                "factors that might be connected to their complained issue. Assess the severity of the issue based on "
+                "their responses. If the issue appears non-critical, offer gentle and supportive advice on what steps "
+                "they can take next. If the issue seems critical or urgent, generate a clear and concise summary of the "
+                "patient's concerns and symptoms for further medical attention. Maintain empathy and clarity throughout the interaction."
+            )
         
         # Add entity awareness to system prompt if entities were detected
         if detected_entities:
@@ -255,40 +300,52 @@ class ChatSummaryAPIView(APIView):
             emotion_summary += f"Emotions detected during conversation: {', '.join(emotion_list)}."
         
         # Create a summary using LangChain
+        # Configure a clinical summarizer with focus and clarity
         llm = ChatOpenAI(
-            temperature=0.8,
+            temperature=0.4,  # Very structured and safe
             openai_api_key=os.getenv('OPENAI_API_KEY'),
-            model="gpt-4o"
+            model="gpt-4o",
+            model_kwargs={
+                "top_p": 0.85
+            }
         )
-        
+
+        # Refined summary prompt
         summary_template = """
-        You are a medical assistant tasked with creating a concise summary for a doctor based on a patient conversation.
-        
-        Below is a conversation between a healthcare AI assistant and a patient:
-        
+        You are a medical documentation assistant. Based on the following conversation between a patient and a virtual healthcare assistant, generate a clinical summary for a doctor.
+
+        ---
+
+        Conversation:
         {conversation}
-        
+
+        ---
+
+        Detected Medical Entities:
         {entity_summary}
-        
+
+        Patient Emotional Overview:
         {emotion_summary}
-        
-        Please create a clear, professional summary for the doctor that includes:
-        1. Key symptoms mentioned
-        2. Duration of symptoms
-        3. Relevant medical history
-        4. Patient concerns
-        5. Any lifestyle factors mentioned
-        6. Emotional state of the patient
-        7. Recommended next steps (if discussed)
-        
-        Format this as a clinical summary a doctor would find helpful for a patient consultation.
+
+        ---
+
+        Your summary must include:
+        1. **Patient's main symptoms** (with severity and duration if mentioned)
+        2. **Relevant medical conditions or history**
+        3. **Any medications, treatments, or vital signs referenced**
+        4. **Patient's emotional state during the conversation**
+        5. **Any lifestyle or contextual clues (e.g. sleep, stress, work)**
+        6. **Questions or concerns raised by the patient**
+        7. **Suggested next steps or further assessments if applicable**
+
+        Format your output clearly. Aim for 5–8 sentences that a doctor could quickly read before consultation.
         """
-        
+
         summary_prompt = PromptTemplate(
             input_variables=["conversation", "entity_summary", "emotion_summary"],
             template=summary_template
         )
-        
+
         summary_chain = LLMChain(llm=llm, prompt=summary_prompt)
         
         try:

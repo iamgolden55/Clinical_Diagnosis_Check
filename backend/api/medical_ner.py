@@ -199,11 +199,24 @@ def get_emotion_pipeline():
 # Analyze patient emotion
 def analyze_patient_emotion(text):
     try:
+        # Add minimum length threshold to avoid misclassifications on short messages
+        MIN_TEXT_LENGTH = 5  # Skip emotion detection for very short messages
+        MIN_CONFIDENCE = 0.5  # Minimum confidence threshold for emotion detection
+        
+        if len(text.strip()) < MIN_TEXT_LENGTH:
+            # Skip emotion analysis for greetings and very short messages
+            return {"emotion": "unknown", "confidence": 0.0}
+            
         emotion_classifier = get_emotion_pipeline()
         result = emotion_classifier(text)
         
         # Return the primary emotion and its confidence score
         emotion = result[0]
+        
+        # Only return a valid emotion if confidence is above threshold
+        if emotion["score"] < MIN_CONFIDENCE:
+            return {"emotion": "unknown", "confidence": emotion["score"]}
+            
         return {
             "emotion": emotion["label"],
             "confidence": emotion["score"]
