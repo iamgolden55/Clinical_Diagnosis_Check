@@ -1,0 +1,279 @@
+.expert-review-system {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 1400px;
+}
+
+.expert-review-system h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.expert-content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.feedback-list-section {
+  flex: 1;
+  min-width: 350px;
+}
+
+.review-form-section {
+  flex: 1;
+  min-width: 350px;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sort-control select {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.feedback-list {
+  max-height: 600px;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.feedback-item {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.feedback-item:hover {
+  background-color: #f5f5f5;
+}
+
+.feedback-item.selected {
+  background-color: #e8f4fc;
+  border-left: 4px solid #3498db;
+}
+
+.feedback-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.feedback-date {
+  color: #7f8c8d;
+}
+
+.feedback-rating {
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.rating-1, .rating-2 {
+  background-color: #ffcccc;
+  color: #e74c3c;
+}
+
+.rating-3 {
+  background-color: #fff2cc;
+  color: #f39c12;
+}
+
+.rating-4, .rating-5 {
+  background-color: #d4edda;
+  color: #27ae60;
+}
+
+.cultural-flag {
+  background-color: #e74c3c;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.feedback-query, .feedback-response {
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+}
+
+.no-feedback {
+  padding: 30px;
+  text-align: center;
+  color: #7f8c8d;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.review-form-section h3 {
+  margin-bottom: 15px;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.selected-feedback {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.selected-feedback h4 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.conversation-box {
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.user-message, .ai-response {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.ai-response {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.feedback-details {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.review-form {
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-group input, .form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.rating-control {
+  display: flex;
+  gap: 5px;
+}
+
+.rating-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rating-btn.active {
+  background-color: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.submit-btn {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #2980b9;
+}
+
+.no-selection {
+  background-color: #f8f9fa;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+  padding: 30px;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+.expert-loading, .expert-error {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+}
+
+.expert-error {
+  color: #e74c3c;
+  background-color: #fadbd8;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .expert-content {
+    flex-direction: column;
+  }
+  
+  .feedback-list-section, .review-form-section {
+    width: 100%;
+  }
+} 

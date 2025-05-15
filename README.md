@@ -1,152 +1,206 @@
-# Clinical Diagnosis Check
+# EleraAI Healthcare Voice Assistant
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
-![Python](https://img.shields.io/badge/python-3.13-green.svg)
-![Framework](https://img.shields.io/badge/framework-Django%20+%20React-purple.svg)
+EleraAI Healthcare Voice Assistant is an advanced healthcare AI system that allows real-time voice conversations with patients, supporting multiple languages including Nigerian Pidgin, Yoruba, and Igbo.
 
-## 🩺 Overview
+## Project Structure
 
-Clinical Diagnosis Check is an advanced healthcare AI system that bridges the gap between unstructured patient communications and structured medical data. The system uses Bio_ClinicalBERT, a specialized clinical language model, alongside pattern-based approaches to identify medical entities, analyze patient emotions, and generate structured clinical summaries for healthcare professionals.
+The project consists of two main components:
 
-![System Overview](https://i.imgur.com/HDGnM7i.png)
+1. **Backend**: Django-based API server with LLM integration
+2. **Frontend**: React-based UI for web interface with voice capabilities
 
-## ✨ Key Features
+## Features
 
-- **Medical Entity Recognition**: Automatically extracts medications, symptoms, conditions, and vital signs from patient text
-- **Attribute Detection**: Identifies severity, duration, and other contextual information about medical entities
-- **Emotion Analysis**: Analyzes patient emotional state to enable more empathetic communication
-- **Clinical Summary Generation**: Creates structured summaries for healthcare providers
-- **Hybrid Approach**: Combines neural networks with pattern-matching for optimal accuracy and performance
+- Real-time voice conversations using LiveKit
+- Automatic speech recognition with OpenAI Whisper API
+- Natural-sounding speech synthesis with ElevenLabs
+- Multi-language support including Nigerian Pidgin, Yoruba, and Igbo
+- Persistence of conversation history and transcripts
+- Medical knowledge base integration
+- Toggle between text and voice modes
+- Visual indicators for speech activity
 
-## 🏗️ System Architecture
-
-The system consists of:
-
-1. **Frontend**: React-based UI for patient-doctor communication
-2. **Backend**: Django REST API for processing requests and managing data
-3. **NLP Pipeline**:
-   - Medical Entity Recognition with Bio_ClinicalBERT
-   - Emotion analysis using a pre-trained emotion classification model
-   - Pattern-based entity extraction for medications, symptoms, conditions
-4. **LLM Integration**: OpenAI GPT models for generating conversational responses and clinical summaries
-5. **Database**: Storage for conversation history and extracted medical entities
-
-## 🔧 Technologies Used
-
-- **Django**: Backend API framework
-- **React**: Frontend interface
-- **Bio_ClinicalBERT**: Domain-specific language model fine-tuned on clinical text
-- **Hugging Face Transformers**: For NLP and ML model implementation
-- **LangChain**: For conversational AI integration
-- **OpenAI API**: For advanced language model capabilities
-- **Regular Expressions**: For pattern-based entity extraction
-
-## 🚀 Installation
+## Backend Setup
 
 ### Prerequisites
-- Python 3.13+
-- Node.js 16+
+
+- Python 3.11+
 - Django 5.2+
-- React 18+
+- PostgreSQL or SQLite
+- LiveKit account (for real-time communications)
+- OpenAI API key (for transcription)
+- ElevenLabs API key (for voice synthesis)
 
-### Backend Setup
+### Environment Setup
+
+1. Clone the repository:
 ```bash
-# Clone the repository
-git clone https://github.com/iamgolden55/Clinical_Diagnosis_Check.git
-cd Clinical_Diagnosis_Check
+git clone https://github.com/yourusername/EleraAI.git
+cd EleraAI
+```
 
-# Create and activate virtual environment
+2. Set up Python virtual environment:
+```bash
+cd backend
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install backend dependencies
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
+```
 
-# Apply migrations
-cd backend
+4. Create environment variables file (`.env`) in the backend directory with the following:
+```
+# Django
+SECRET_KEY=your_secret_key
+DEBUG=True
+
+# APIs
+OPENAI_API_KEY=your_openai_api_key
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
+
+# LiveKit
+LIVEKIT_API_KEY=your_livekit_api_key
+LIVEKIT_API_SECRET=your_livekit_api_secret
+LIVEKIT_URL=wss://your-livekit-server.livekit.cloud
+```
+
+5. Run migrations:
+```bash
 python manage.py migrate
+```
 
-# Start Django server
+6. Start the development server:
+```bash
 python manage.py runserver
 ```
 
-### Frontend Setup
+## Frontend Setup
+
+### Prerequisites
+
+- Node.js 16+
+- npm or yarn
+
+### Installation
+
+1. Install dependencies:
 ```bash
-# Navigate to frontend directory
-cd ../frontend
-
-# Install dependencies
+cd frontend
 npm install
+```
 
-# Start the development server
+2. Create `.env` file with configuration:
+```
+REACT_APP_BACKEND_URL=http://localhost:8000
+```
+
+3. Start the development server:
+```bash
 npm start
 ```
 
-## 📊 Example Usage
+## Using the Application
 
-### Patient Input:
-```
-I have been suffering from severe migraines for the past 2 weeks. They started after I changed my blood pressure medication from lisinopril 10mg to amlodipine 5mg daily. I have hypertension diagnosed 3 years ago. The pain is usually a throbbing sensation on the right side of my head, and it gets worse with light and noise. My most recent blood pressure reading was 145/85 yesterday.
-```
+1. Start both backend and frontend servers following the setup instructions above
+2. Open your browser to http://localhost:3000
+3. You'll see the main interface with two modes:
+   - **Text Mode**: Traditional text-based chat interface
+   - **Voice Mode**: Real-time voice conversation with the AI assistant
 
-### System Output:
-```json
-{
-  "MEDICATION": ["lisinopril", "amlodipine", "10mg", "5mg"],
-  "SYMPTOM": ["pain", "past 2 weeks"],
-  "SEVERITY": ["worse"],
-  "DURATION": ["past 2 weeks", "3 years ago"],
-  "CONDITION": ["hypertension"],
-  "VITALS": ["145", "85"]
-}
-```
+### Voice Mode Features
 
-## 📄 Documentation
+- **Language Selection**: Choose from English, Nigerian Pidgin, Yoruba, or Igbo
+- **Speak Button**: Click to start/stop speaking
+- **Audio Controls**: Adjust microphone settings with the audio select button
+- **Live Transcript**: See real-time transcriptions of your speech
+- **Visual Indicators**: Shows when the assistant is speaking
 
-For complete documentation, see [healthcare_ai_documentation.md](healthcare_ai_documentation.md) which includes:
+## API Documentation
 
-- Detailed implementation explanation
-- Medical entity recognition techniques
-- Bio_ClinicalBERT integration
-- System workflow diagrams
-- API documentation
-- Use cases and examples
+### Voice Service API Endpoints
 
-## 🔮 Future Enhancements
+#### LiveKit Token Generation
+- POST `/voice/token/`
+  - Request: `{ "conversation_id": "string", "user_identity": "string", "user_name": "string" }`
+  - Response: `{ "token": "string", "room_name": "string", "livekit_url": "string", "voice_session_id": "number", "participant_id": "number" }`
 
-- **Relation Extraction**: Identify relationships between medical entities
-- **Temporal Reasoning**: Enhance understanding of symptom progression over time
-- **Medical Knowledge Graph Integration**: Connect entities to standardized medical ontologies
-- **Multi-modal Understanding**: Process images, wearable data, and voice
-- **Fine-tuned Model Variants**: Create specialized versions for different medical domains
+#### Voice Session Management
+- GET `/voice/sessions/` - List all active voice sessions
+- GET `/voice/sessions/{id}/` - Get details of a specific voice session
+- POST `/voice/sessions/` - Create a new voice session
+- PUT `/voice/sessions/{id}/` - Update a voice session
+- DELETE `/voice/sessions/{id}/` - Deactivate a voice session
 
-## 🧪 Testing
+#### Participants
+- GET `/voice/sessions/{session_id}/participants/` - List all participants in a session
+- GET `/voice/sessions/{session_id}/participants/{id}/` - Get details of a specific participant
+- POST `/voice/sessions/{session_id}/participants/` - Add a participant to a session
+- PUT `/voice/sessions/{session_id}/participants/{id}/` - Update a participant
+- DELETE `/voice/sessions/{session_id}/participants/{id}/` - Mark a participant as inactive
 
-```bash
-# Run backend tests
-cd backend
-python manage.py test
+#### Speech-to-Text
+- POST `/voice/transcribe/`
+  - Request: Multipart form with `voice_session_id`, `participant_id` (optional), `language` (optional), and `audio` file
+  - Response: `{ "transcript": "string", "confidence": "number", "language": "string", "transcript_id": "number" }`
 
-# Run frontend tests
-cd ../frontend
-npm test
-```
+#### Text-to-Speech
+- POST `/voice/synthesize/`
+  - Request: `{ "voice_session_id": "number", "text": "string", "language_code": "string", "voice_id": "string" (optional) }`
+  - Response: Audio file (MP3)
 
-## 📝 License
+## LiveKit Integration
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project uses LiveKit for real-time voice communication. The backend serves as a token server and manages the rooms and participants, while the frontend uses the LiveKit SDK to establish WebRTC connections.
 
-## 👥 Contributing
+### Room Management
+
+Rooms are automatically created when a new conversation is started. The room name is based on the conversation ID to ensure continuity.
+
+### Token Generation
+
+Tokens are generated with the appropriate permissions based on the user's role. The token includes the room name, user identity, and permissions to publish and subscribe to audio.
+
+## Voice Processing
+
+### Speech Recognition
+
+The OpenAI Whisper API is used for speech recognition. The system supports multiple languages and automatically detects the language if not specified.
+
+### Text-to-Speech Synthesis
+
+ElevenLabs API is used for high-quality text-to-speech synthesis. Different voices are used based on the language of the text.
+
+## Technical Implementation
+
+The voice conversation system uses the following technologies and approaches:
+
+1. **Frontend**: React with TypeScript, LiveKit WebRTC components
+2. **Backend**: Django REST Framework, LiveKit server SDK
+3. **Voice Processing**:
+   - Client-side audio recording using MediaRecorder API
+   - Server-side transcription with OpenAI Whisper
+   - Natural speech generation with ElevenLabs
+4. **Real-time Communication**: WebRTC through LiveKit
+
+## Troubleshooting
+
+- **Microphone Issues**: Make sure to grant microphone permissions in your browser
+- **Connection Problems**: Check that both backend and frontend servers are running
+- **Voice Not Working**: Verify your API keys for LiveKit, OpenAI, and ElevenLabs are correct
+
+## License
+
+[MIT License](LICENSE)
+
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
-- [Emily Alsentzer](https://github.com/EmilyAlsentzer) for Bio_ClinicalBERT
-- The Hugging Face team for Transformers library
-- OpenAI for GPT models
-- Django and React communities
-
-## 📬 Contact
-
-For questions and feedback, please open an issue on GitHub or contact the repository owner.
+- OpenAI for Whisper API
+- ElevenLabs for voice synthesis
+- LiveKit for real-time communications

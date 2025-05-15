@@ -1,0 +1,325 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-container {
+  margin-bottom: 16px;
+  max-width: 80%;
+  line-height: 1.5;
+}
+
+.message-user {
+  background-color: #f1f6ff;
+  border-radius: 12px 12px 2px 12px;
+  padding: 12px 16px;
+  align-self: flex-start;
+  margin-right: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.message-assistant {
+  background-color: #e6f4ea;
+  border-radius: 12px 12px 12px 2px;
+  padding: 12px 16px;
+  align-self: flex-end;
+  margin-left: auto;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  white-space: pre-wrap;
+}
+
+.message-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Style for metadata sections below message content */
+.message-metadata {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Entity container styles */
+.entities-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.entity-item {
+  padding: 3px 8px;
+  border-radius: 12px;
+  background-color: rgba(66, 133, 244, 0.1);
+  display: inline-flex;
+  align-items: center;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.entity-type {
+  font-weight: bold;
+  margin-right: 4px;
+  color: #4285f4;
+}
+
+/* Emotion indicator styles */
+.emotion-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.emotion-label {
+  font-weight: bold;
+  color: #666;
+}
+
+.emotion-value {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* Colors for different emotions */
+.joy {
+  background-color: #FFEB3B;
+  color: #5F4B00;
+}
+
+.sadness {
+  background-color: #90CAF9;
+  color: #0D47A1;
+}
+
+.anger {
+  background-color: #FF8A80;
+  color: #C41C00;
+}
+
+.fear {
+  background-color: #CE93D8;
+  color: #4A148C;
+}
+
+.surprise {
+  background-color: #FFCC80;
+  color: #E65100;
+}
+
+.love {
+  background-color: #F48FB1;
+  color: #880E4F;
+}
+
+.chat-controls {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background-color: #ffffff;
+}
+
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 24px;
+  outline: none;
+}
+
+.send-btn, .mic-btn, .summary-btn, .back-btn {
+  margin-left: 8px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.send-btn {
+  background-color: #4285f4;
+  color: white;
+}
+
+.send-btn:hover {
+  background-color: #3b78e7;
+}
+
+.mic-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.mic-btn.listening {
+  background-color: #ff4444;
+  color: white;
+  border-color: #ff4444;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.summary-btn {
+  margin-top: 10px;
+  background-color: #34a853;
+  color: white;
+  align-self: center;
+}
+
+.summary-btn:hover {
+  background-color: #2d9649;
+}
+
+.summary-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.summary-container h2 {
+  color: #4285f4;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+.summary-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 15px 0;
+  white-space: pre-line;
+}
+
+/* Summary entity section styles */
+.summary-entities, .summary-emotions {
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.summary-entities h3, .summary-emotions h3 {
+  color: #4285f4;
+  margin-top: 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.entities-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Emotion visualization */
+.emotion-dominant {
+  margin-bottom: 10px;
+}
+
+.emotion-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emotion-breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emotion-name {
+  width: 80px;
+  text-align: right;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.emotion-bar-container {
+  flex: 1;
+  height: 20px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.emotion-bar {
+  height: 100%;
+  border-radius: 10px;
+  background-color: #4285f4;
+}
+
+.emotion-percentage {
+  position: absolute;
+  right: 10px;
+  color: #333;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+.back-btn {
+  background-color: #9aa0a6;
+  color: white;
+  align-self: flex-start;
+}
+
+.back-btn:hover {
+  background-color: #80868b;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+} 

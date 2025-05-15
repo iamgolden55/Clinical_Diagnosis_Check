@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'corsheaders',
     # Local apps
     'api',
+    'voice_service',  # New voice service app for LiveKit integration
 ]
 
 MIDDLEWARE = [
